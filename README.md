@@ -9,6 +9,28 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+```swift
+let popupVC = PopupCollectionViewController(fromVC: self)
+popupVC.presentViewControllers([UIViewController()], completion: nil)
+```
+
+
+### Custom
+
+```swift
+let popupVC = PopupCollectionViewController(fromVC: self)
+popupVC.presentViewControllers([UIViewController(), UIViewController()],
+    options: [
+        .CellWidth(self.view.bounds.width),
+        .PopupHeight(400),
+        .ContentEdgeInsets(0),
+        .Layout(.Center),
+        .Animation(.SlideLeft)
+    ],
+    completion: nil)
+```
+
+
 ## Requirements
 - iOS 8.0+
 - Xcode 7
