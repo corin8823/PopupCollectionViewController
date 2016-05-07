@@ -22,6 +22,15 @@ it, simply add the following line to your Podfile:
 use_frameworks!
 pod "PopupCollectionViewController"
 ```
+
+## Customization
+- `case Layout(PopupCollectionViewController.PopupLayout)`
+- `case Animation(PopupCollectionViewController.PopupAnimation)`
+- `case OverlayColor(UIColor)`
+- `case PopupHeight(CGFloat)`
+- `case CellWidth(CGFloat)`
+- `case ContentEdgeInsets(CGFloat)`
+
 ## Acknowledgments
 
 Inspired by [PopupController](https://github.com/daisuke310vvv/PopupController) in [daisuke310vvv](https://github.com/daisuke310vvv)

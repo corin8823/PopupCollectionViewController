@@ -378,8 +378,10 @@ extension PopupCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension PopupCollectionViewController: PagingFlowLayoutDelegate {
 
     public func collectionView(collectionView: UICollectionView, layout pagingFlowLayout: PagingFlowLayout, changePage page: Int) {
-        let vc = self.childViewControllers[page]
-        (vc as? PopupViewCellDelegate)?.popupCollectionViewControllerDidShow(self)
+        if self.childViewControllers.count > page {
+            let vc = self.childViewControllers[page]
+            (vc as? PopupViewCellDelegate)?.popupCollectionViewControllerDidShow(self)
+        }
     }
 }
 

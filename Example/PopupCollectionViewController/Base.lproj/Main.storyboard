@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pfR-CX-Cu2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pfR-CX-Cu2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -18,17 +18,26 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2I-yW-qPt">
-                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <rect key="frame" x="70" y="285" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="didTapCollectionPopupButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Kif-uE-WeD"/>
+                                    <action selector="didTapLeftButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="sA5-pa-pFt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yyz-G7-54N">
+                                <rect key="frame" x="484" y="285" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="didTapRightButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7O2-F5-SvG"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Yyz-G7-54N" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="0nW-QH-KJS"/>
                             <constraint firstItem="R2I-yW-qPt" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="8JM-iT-3Tr"/>
-                            <constraint firstItem="R2I-yW-qPt" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="YCk-up-cZK"/>
+                            <constraint firstAttribute="trailing" secondItem="Yyz-G7-54N" secondAttribute="trailing" constant="70" id="ZJa-ci-NJD"/>
+                            <constraint firstItem="R2I-yW-qPt" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="70" id="gtZ-tI-p00"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FyA-Xl-NGz"/>

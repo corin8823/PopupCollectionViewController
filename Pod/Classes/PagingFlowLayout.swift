@@ -51,7 +51,7 @@ public class PagingFlowLayout: UICollectionViewFlowLayout {
         var proposedX = round(candidateAttribute.center.x - collectionView.bounds.size.width * 0.5)
         proposedX = max(proposedX, 0)
         proposedX = min(proposedX, round(self.collectionViewContentSize().width - collectionView.bounds.size.width))
-        let currentPage = Int(ceil(proposedX / (candidateAttribute.bounds.size.width + self.minimumInteritemSpacing)))
+        let currentPage = Int(round(proposedX / (candidateAttribute.bounds.size.width + self.minimumInteritemSpacing)))
         self.pagingDelegate?.collectionView(collectionView, layout: self, changePage: currentPage)
         return CGPoint(x: proposedX, y: proposedContentOffset.y)
     }
