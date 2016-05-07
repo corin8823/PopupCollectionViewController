@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/PopupCollectionViewController.svg?style=flat)](http://cocoapods.org/pods/PopupCollectionViewController)
 [![Platform](https://img.shields.io/cocoapods/p/PopupCollectionViewController.svg?style=flat)](http://cocoapods.org/pods/PopupCollectionViewController)
 
-## Description and [appetize.io`s DEMO](https://appetize.io/app/q4n81yf0aakkx20x2cejh107b4)
+## Description and [appetize.io`s DEMO](https://appetize.io/app/8ugdc3jamzhx9ar4j2tnqx189w)
 
 ![](https://github.com/corin8823/PopupCollectionViewController/blob/master/ScreenShots/Screenshot.gif)
 
