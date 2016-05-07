@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version          = "0.0.1"
   s.summary          = "PopupCollectionViewController is a collectionView in Popup view"
   s.homepage         = "https://github.com/corin8823/PopupCollectionViewController"
-  s.screenshots      = "https://github.com/corin8823/PopupCollectionViewController/blob/master/ScreenShots/Screenshot.gif"
+  # s.screenshots      = "https://github.com/corin8823/PopupCollectionViewController/blob/master/ScreenShots/Screenshot.gif"
   s.license          = { :type => "MIT", :file => "LICENSE" }
   s.author           = { "corin8823" => "yusuke.t88@gmail.com" }
   s.source           = { :git => "https://github.com/corin8823/PopupCollectionViewController.git", :tag => s.version.to_s }
