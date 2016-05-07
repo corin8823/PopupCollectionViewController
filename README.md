@@ -10,6 +10,8 @@
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
+- iOS 8.0+
+- Xcode 7
 
 ## Installation
 
@@ -17,12 +19,12 @@ PopupCollectionViewController is available through [CocoaPods](http://cocoapods.
 it, simply add the following line to your Podfile:
 
 ```ruby
+use_frameworks!
 pod "PopupCollectionViewController"
 ```
+## Acknowledgments
 
-## Author
-
-corin8823, yusuke_takahashi@cyberagent.co.jp
+Inspired by [PopupController](https://github.com/daisuke310vvv/PopupController) in [daisuke310vvv](https://github.com/daisuke310vvv)
 
 ## License
 

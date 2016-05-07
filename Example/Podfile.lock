@@ -1,0 +1,14 @@
+PODS:
+  - PopupCollectionViewController (0.1.0)
+
+DEPENDENCIES:
+  - PopupCollectionViewController (from `../`)
+
+EXTERNAL SOURCES:
+  PopupCollectionViewController:
+    :path: ../
+
+SPEC CHECKSUMS:
+  PopupCollectionViewController: e6dfefcf0075475cbdebc8ba168322320f6c77bc
+
+COCOAPODS: 0.39.0
