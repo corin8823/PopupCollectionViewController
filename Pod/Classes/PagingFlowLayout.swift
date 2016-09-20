@@ -9,26 +9,26 @@
 import UIKit
 
 public protocol PagingFlowLayoutDelegate {
-    func collectionView(collectionView: UICollectionView, layout pagingFlowLayout: PagingFlowLayout, changePage page: Int)
+    func collectionView(_ collectionView: UICollectionView, layout pagingFlowLayout: PagingFlowLayout, changePage page: Int)
 }
 
-public class PagingFlowLayout: UICollectionViewFlowLayout {
+open class PagingFlowLayout: UICollectionViewFlowLayout {
 
-    public var pagingDelegate: PagingFlowLayoutDelegate?
+    open var pagingDelegate: PagingFlowLayoutDelegate?
 
-    override public func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+    override open func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
 
         guard let collectionView = self.collectionView else {
-            return super.targetContentOffsetForProposedContentOffset(proposedContentOffset)
+            return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
         }
 
-        guard let attributes = self.layoutAttributesForElementsInRect(collectionView.bounds) else {
+        guard let attributes = self.layoutAttributesForElements(in: collectionView.bounds) else {
             return .zero
         }
         let proposeCenterX = proposedContentOffset.x + collectionView.bounds.size.width * 0.5
         var candidateAttribute: UICollectionViewLayoutAttributes!
         attributes.forEach {
-            if $0.representedElementCategory != .Cell {
+            if $0.representedElementCategory != .cell {
                 return
             }
 
@@ -50,7 +50,7 @@ public class PagingFlowLayout: UICollectionViewFlowLayout {
 
         var proposedX = round(candidateAttribute.center.x - collectionView.bounds.size.width * 0.5)
         proposedX = max(proposedX, 0)
-        proposedX = min(proposedX, round(self.collectionViewContentSize().width - collectionView.bounds.size.width))
+        proposedX = min(proposedX, round(self.collectionViewContentSize.width - collectionView.bounds.size.width))
         let currentPage = Int(round(proposedX / (candidateAttribute.bounds.size.width + self.minimumInteritemSpacing)))
         self.pagingDelegate?.collectionView(collectionView, layout: self, changePage: currentPage)
         return CGPoint(x: proposedX, y: proposedContentOffset.y)

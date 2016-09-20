@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'PopupCollectionViewControllerExample', :exclusive => true do
+target 'PopupCollectionViewControllerExample' do
   pod 'PopupCollectionViewController', :path => '../'
 end
