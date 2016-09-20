@@ -25,11 +25,11 @@ popupVC.presentViewControllers([UIViewController()], completion: nil)
 let popupVC = PopupCollectionViewController(fromVC: self)
 popupVC.presentViewControllers([UIViewController(), UIViewController()],
     options: [
-        .CellWidth(self.view.bounds.width),
-        .PopupHeight(400),
-        .ContentEdgeInsets(0),
-        .Layout(.Center),
-        .Animation(.SlideLeft)
+        .cellWidth(self.view.bounds.width),
+        .popupHeight(400),
+        .contentEdgeInsets(0),
+        .layout(.Center),
+        .animation(.SlideLeft)
     ],
     completion: nil)
 ```
@@ -37,7 +37,9 @@ popupVC.presentViewControllers([UIViewController(), UIViewController()],
 
 ## Requirements
 - iOS 8.0+
-- Xcode 7
+- swift 3.0
+
+If you use Swift 2.2 or 2.3, try PopupCollectionViewController 0.0.1.
 
 ## Installation
 
@@ -50,12 +52,12 @@ pod "PopupCollectionViewController"
 ```
 
 ## Customization
-- `case Layout(PopupCollectionViewController.PopupLayout)`
-- `case Animation(PopupCollectionViewController.PopupAnimation)`
-- `case OverlayColor(UIColor)`
-- `case PopupHeight(CGFloat)`
-- `case CellWidth(CGFloat)`
-- `case ContentEdgeInsets(CGFloat)`
+- `case layout(PopupCollectionViewController.PopupLayout)`
+- `case animation(PopupCollectionViewController.PopupAnimation)`
+- `case overlayColor(UIColor)`
+- `case popupHeight(CGFloat)`
+- `case cellWidth(CGFloat)`
+- `case contentEdgeInsets(CGFloat)`
 
 ## Acknowledgments
 
