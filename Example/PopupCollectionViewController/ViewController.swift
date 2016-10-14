@@ -16,35 +16,35 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let vc1 = DemoViewController()
-        vc1.view.backgroundColor = UIColor.redColor()
-        vc1.closeButton.setTitle("First", forState: .Normal)
+        vc1.view.backgroundColor = UIColor.red
+        vc1.closeButton.setTitle("First", for: UIControlState())
         let vc2 = DemoViewController()
-        vc2.view.backgroundColor = UIColor.blueColor()
-        vc2.closeButton.setTitle("Second", forState: .Normal)
+        vc2.view.backgroundColor = UIColor.blue
+        vc2.closeButton.setTitle("Second", for: UIControlState())
         let vc3 = DemoViewController()
-        vc3.view.backgroundColor = UIColor.greenColor()
-        vc3.closeButton.setTitle("Third", forState: .Normal)
+        vc3.view.backgroundColor = UIColor.green
+        vc3.closeButton.setTitle("Third", for: UIControlState())
         self.vcs = [vc1, vc2, vc3]
     }
 
-    @IBAction func didTapLeftButton(sender: AnyObject) {
+    @IBAction func didTapLeftButton(_ sender: AnyObject) {
         PopupCollectionViewController(fromVC: self.navigationController!)
             .presentViewControllers(
                 self.vcs,
-                options: [.CellWidth(300), .PopupHeight(400), .Layout(.Center)],
+                options: [.cellWidth(300), .popupHeight(400), .layout(.center)],
                 completion: nil)
     }
 
-    @IBAction func didTapRightButton(sender: AnyObject) {
+    @IBAction func didTapRightButton(_ sender: AnyObject) {
         PopupCollectionViewController(fromVC: self.navigationController!)
             .presentViewControllers(
                 self.vcs,
                 options: [
-                    .CellWidth(self.view.bounds.width),
-                    .PopupHeight(400),
-                    .ContentEdgeInsets(0),
-                    .Layout(.Center),
-                    .Animation(.SlideLeft)
+                    .cellWidth(self.view.bounds.width),
+                    .popupHeight(400),
+                    .contentEdgeInsets(0),
+                    .layout(.center),
+                    .animation(.slideLeft)
                 ],
                 completion: nil)
     }
@@ -56,8 +56,8 @@ class DemoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.closeButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        self.closeButton.addTarget(self, action: #selector(DemoViewController.didTapCloseButton), forControlEvents: .TouchUpInside)
+        self.closeButton.setTitleColor(UIColor.white, for: UIControlState())
+        self.closeButton.addTarget(self, action: #selector(DemoViewController.didTapCloseButton), for: .touchUpInside)
         self.view.addSubview(self.closeButton)
     }
 
@@ -74,7 +74,7 @@ class DemoViewController: UIViewController {
 
 extension DemoViewController: PopupViewCellDelegate {
 
-    func popupCollectionViewControllerDidShow(viewController: PopupCollectionViewController) {
+    func popupCollectionViewControllerDidShow(_ viewController: PopupCollectionViewController) {
         print("\(self.closeButton.titleLabel?.text)")
     }
 }
