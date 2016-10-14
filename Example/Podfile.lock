@@ -6,11 +6,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   PopupCollectionViewController:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   PopupCollectionViewController: 2bef5d44c75e423a2943bbe2d6b5dc829b42127d
 
 PODFILE CHECKSUM: 149b607a76921de4dcb0280083a71f596b312fd0
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.2
