@@ -11,7 +11,6 @@ import UIKit
 public enum PopupCollectionViewControllerOption {
     case layout(PopupCollectionViewController.PopupLayout)
     case animation(PopupCollectionViewController.PopupAnimation)
-    case overlayColor(UIColor)
     case overlayLayer(CALayer)
     case popupHeight(CGFloat)
     case cellWidth(CGFloat)
@@ -49,8 +48,11 @@ open class PopupCollectionViewController: UIViewController {
     // Custom Property
     fileprivate var layout: PopupLayout = .center
     fileprivate var animation: PopupAnimation = .slideUp
-    fileprivate var overlayColor: UIColor = UIColor(white: 0.0, alpha: 0.4)
-    fileprivate var overlayLayer: CALayer?
+    fileprivate lazy var overlayLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor(white: 0.0, alpha: 0.4).cgColor
+        return layer
+    }()
     fileprivate var popupHeight: CGFloat = 400
     fileprivate var cellWidth: CGFloat = 300
     fileprivate var contentEdgeInsets: CGFloat = 24
@@ -155,8 +157,6 @@ private extension PopupCollectionViewController {
                 self.layout = value
             case .animation(let value):
                 self.animation = value
-            case .overlayColor(let value):
-                self.overlayColor = value
             case .overlayLayer(let value):
                 self.overlayLayer = value
             case .popupHeight(let value):
@@ -181,12 +181,8 @@ private extension PopupCollectionViewController {
         self.baseScrollView.delegate = self
         self.baseScrollView.frame = self.view.frame
         self.baseScrollView.backgroundColor = .clear
-        if let overlayLayer = self.overlayLayer {
-            overlayLayer.frame = self.baseScrollView.bounds
-            self.view.layer.insertSublayer(overlayLayer, at: 0)
-        } else {
-            self.view.backgroundColor = self.overlayColor
-        }
+        self.overlayLayer.frame = self.baseScrollView.bounds
+        self.view.layer.insertSublayer(overlayLayer, at: 0)
         self.view.addSubview(self.baseScrollView)
         self.baseScrollView.addSubview(self.popupCollectionView)
     }
