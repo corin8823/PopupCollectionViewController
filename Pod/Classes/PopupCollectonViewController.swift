@@ -12,6 +12,7 @@ public enum PopupCollectionViewControllerOption {
     case layout(PopupCollectionViewController.PopupLayout)
     case animation(PopupCollectionViewController.PopupAnimation)
     case overlayColor(UIColor)
+    case overlayLayer(CALayer)
     case popupHeight(CGFloat)
     case cellWidth(CGFloat)
     case contentEdgeInsets(CGFloat)
@@ -49,6 +50,7 @@ open class PopupCollectionViewController: UIViewController {
     fileprivate var layout: PopupLayout = .center
     fileprivate var animation: PopupAnimation = .slideUp
     fileprivate var overlayColor: UIColor = UIColor(white: 0.0, alpha: 0.4)
+    fileprivate var overlayLayer: CALayer?
     fileprivate var popupHeight: CGFloat = 400
     fileprivate var cellWidth: CGFloat = 300
     fileprivate var contentEdgeInsets: CGFloat = 24
@@ -155,6 +157,8 @@ private extension PopupCollectionViewController {
                 self.animation = value
             case .overlayColor(let value):
                 self.overlayColor = value
+            case .overlayLayer(let value):
+                self.overlayLayer = value
             case .popupHeight(let value):
                 self.popupHeight = value
             case .cellWidth(let value):
@@ -176,7 +180,13 @@ private extension PopupCollectionViewController {
         self.baseScrollView.alwaysBounceVertical = true
         self.baseScrollView.delegate = self
         self.baseScrollView.frame = self.view.frame
-        self.baseScrollView.backgroundColor = self.overlayColor
+        self.baseScrollView.backgroundColor = .clear
+        if let overlayLayer = self.overlayLayer {
+            overlayLayer.frame = self.baseScrollView.bounds
+            self.view.layer.insertSublayer(overlayLayer, at: 0)
+        } else {
+            self.view.backgroundColor = self.overlayColor
+        }
         self.view.addSubview(self.baseScrollView)
         self.baseScrollView.addSubview(self.popupCollectionView)
     }
@@ -248,13 +258,13 @@ private extension PopupCollectionViewController {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
         self.popupCollectionView.alpha = 0.0
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
 
         UIView.animate(
             withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 1.0
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }, completion: { isFinished in
                 completion()
@@ -265,7 +275,7 @@ private extension PopupCollectionViewController {
         UIView.animate(
             withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 0.0
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }, completion: { isFinished in
                 completion()
@@ -275,12 +285,12 @@ private extension PopupCollectionViewController {
     func slideUp(_ layout: PopupLayout, completion: @escaping () -> Void) {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.baseScrollView.contentOffset.y = -UIScreen.main.bounds.height
 
         UIView.animate(
             withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.baseScrollView.contentOffset.y = -layout.origin(self.popupCollectionView).y
                 self.defaultContentOffset = self.baseScrollView.contentOffset
             }, completion: { isFinished in
@@ -292,7 +302,7 @@ private extension PopupCollectionViewController {
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
                 self.popupCollectionView.frame.origin.y = UIScreen.main.bounds.height
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
             }, completion: { isFinished in
                 completion()
         })
@@ -301,11 +311,11 @@ private extension PopupCollectionViewController {
     func slideLeft(_ layout: PopupLayout, completion: @escaping () -> Void) {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.baseScrollView.contentOffset.x = -UIScreen.main.bounds.width
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.baseScrollView.contentOffset.x = -layout.origin(self.popupCollectionView).x
                 self.defaultContentOffset = self.baseScrollView.contentOffset
             }, completion: { isFinished in
@@ -317,7 +327,7 @@ private extension PopupCollectionViewController {
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
                 self.popupCollectionView.frame.origin.x = UIScreen.main.bounds.width
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
             }, completion: { isFinished in
                 completion()
         })
