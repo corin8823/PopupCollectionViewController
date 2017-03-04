@@ -253,7 +253,7 @@ private extension PopupCollectionViewController {
         self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
 
         UIView.animate(
-            withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: {
+            withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 1.0
                 self.baseScrollView.alpha = 1.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -264,7 +264,7 @@ private extension PopupCollectionViewController {
 
     func fadeOut(_ completion: @escaping () -> Void) {
         UIView.animate(
-            withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: {
+            withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 0.0
                 self.baseScrollView.alpha = 0.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -348,14 +348,14 @@ extension PopupCollectionViewController: UICollectionViewDataSource {
         cell.layer.cornerRadius = 2
         cell.layer.masksToBounds = true
 
-        let vc = self.childViewControllers[(indexPath as NSIndexPath).item]
+        let vc = self.childViewControllers[indexPath.row]
         vc.view.frame = cell.bounds
         cell.addSubview(vc.view)
         return cell
     }
 
     @objc(collectionView:didEndDisplayingCell:forItemAtIndexPath:) public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let vc = self.childViewControllers[(indexPath as NSIndexPath).item]
+        let vc = self.childViewControllers[indexPath.item]
         vc.view.removeFromSuperview()
     }
 }

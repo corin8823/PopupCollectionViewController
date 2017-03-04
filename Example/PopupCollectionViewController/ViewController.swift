@@ -17,13 +17,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let vc1 = DemoViewController()
         vc1.view.backgroundColor = UIColor.red
-        vc1.closeButton.setTitle("First", for: UIControlState())
+        vc1.closeButton.setTitle("First", for: .normal)
         let vc2 = DemoViewController()
         vc2.view.backgroundColor = UIColor.blue
-        vc2.closeButton.setTitle("Second", for: UIControlState())
+        vc2.closeButton.setTitle("Second", for: .normal)
         let vc3 = DemoViewController()
         vc3.view.backgroundColor = UIColor.green
-        vc3.closeButton.setTitle("Third", for: UIControlState())
+        vc3.closeButton.setTitle("Third", for: .normal)
         self.vcs = [vc1, vc2, vc3]
     }
 
