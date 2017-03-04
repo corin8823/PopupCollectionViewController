@@ -68,7 +68,7 @@ class DemoViewController: UIViewController {
     }
 
     func didTapCloseButton() {
-        self.popupCollectionViewController()?.dismissViewController(nil)
+        self.popupCollectionViewController()?.dismiss(completion: nil)
     }
 }
 

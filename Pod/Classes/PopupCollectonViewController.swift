@@ -59,7 +59,7 @@ open class PopupCollectionViewController: UIViewController {
             self.popupCollectionView.delegate = self
             self.popupCollectionView.dataSource = self
             self.popupCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
-            self.popupCollectionView.backgroundColor = UIColor.clear
+            self.popupCollectionView.backgroundColor = .clear
             self.popupCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
             self.popupCollectionView.scrollsToTop = false
             self.popupCollectionView.showsHorizontalScrollIndicator = false
@@ -122,7 +122,7 @@ open class PopupCollectionViewController: UIViewController {
         }
     }
 
-    open func dismissViewController(_ completion: (() -> Void)?) {
+    open func dismiss(completion: (() -> Void)?) {
         let animation = self.animation ?? .slideUp
         self.hide(animation) {
             self.didClosePopupView()
@@ -131,11 +131,15 @@ open class PopupCollectionViewController: UIViewController {
         }
     }
 
-    open func appendChildViewControllers(_ childControllers: [UIViewController]) {
-        for vc in childControllers {
-            self.addChildViewController(vc)
+    open func append(childControllers: [UIViewController]) {
+        childControllers.forEach {
+            self.addChildViewController($0)
         }
         self.popupCollectionView.reloadData()
+    }
+
+    func didTapGesture(_ sender: UITapGestureRecognizer) {
+        self.dismiss(completion: nil)
     }
 }
 
@@ -177,20 +181,15 @@ private extension PopupCollectionViewController {
         self.baseScrollView.addSubview(self.popupCollectionView)
     }
 
-    @objc func didTapGesture(_ sender: UITapGestureRecognizer) {
-        self.dismissViewController(nil)
-    }
-
-    func registerTapGesture() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGesture(_:)))
-        gestureRecognizer.delegate = self
-        self.baseScrollView.addGestureRecognizer(gestureRecognizer)
-    }
-
     func show(_ layout: PopupLayout, animation: PopupAnimation, completion: (() -> Void)?) {
         self.popupCollectionView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: self.popupHeight)
         self.popupCollectionView.frame.origin.x = self.layout.origin(self.popupCollectionView).x
-        self.registerTapGesture()
+
+        // add gesture
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGesture(_:)))
+        gestureRecognizer.delegate = self
+        self.baseScrollView.addGestureRecognizer(gestureRecognizer)
+
         switch animation {
         case .fadeIn:
             self.fadeIn(layout) {
@@ -230,8 +229,8 @@ private extension PopupCollectionViewController {
     }
 
     func didClosePopupView() {
-        for vc in self.childViewControllers {
-            vc.removeFromParentViewController()
+        self.childViewControllers.forEach {
+            $0.removeFromParentViewController()
         }
         self.view.isHidden = true
         self.removeFromParentViewController()
@@ -332,7 +331,7 @@ extension PopupCollectionViewController: UIScrollViewDelegate {
         if delta > 50 {
             self.baseScrollView.contentInset.top = -scrollView.contentOffset.y
             self.animation = .slideUp
-            self.dismissViewController(nil)
+            self.dismiss(completion: nil)
         }
     }
 }
@@ -354,7 +353,7 @@ extension PopupCollectionViewController: UICollectionViewDataSource {
         return cell
     }
 
-    @objc(collectionView:didEndDisplayingCell:forItemAtIndexPath:) public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let vc = self.childViewControllers[indexPath.item]
         vc.view.removeFromSuperview()
     }
