@@ -11,7 +11,7 @@ import UIKit
 public enum PopupCollectionViewControllerOption {
     case layout(PopupCollectionViewController.PopupLayout)
     case animation(PopupCollectionViewController.PopupAnimation)
-    case overlayColor(UIColor)
+    case overlayLayer(CALayer)
     case popupHeight(CGFloat)
     case cellWidth(CGFloat)
     case contentEdgeInsets(CGFloat)
@@ -48,7 +48,11 @@ open class PopupCollectionViewController: UIViewController {
     // Custom Property
     fileprivate var layout: PopupLayout = .center
     fileprivate var animation: PopupAnimation = .slideUp
-    fileprivate var overlayColor: UIColor = UIColor(white: 0.0, alpha: 0.4)
+    fileprivate lazy var overlayLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor(white: 0.0, alpha: 0.4).cgColor
+        return layer
+    }()
     fileprivate var popupHeight: CGFloat = 400
     fileprivate var cellWidth: CGFloat = 300
     fileprivate var contentEdgeInsets: CGFloat = 24
@@ -59,7 +63,7 @@ open class PopupCollectionViewController: UIViewController {
             self.popupCollectionView.delegate = self
             self.popupCollectionView.dataSource = self
             self.popupCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
-            self.popupCollectionView.backgroundColor = UIColor.clear
+            self.popupCollectionView.backgroundColor = .clear
             self.popupCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
             self.popupCollectionView.scrollsToTop = false
             self.popupCollectionView.showsHorizontalScrollIndicator = false
@@ -122,7 +126,7 @@ open class PopupCollectionViewController: UIViewController {
         }
     }
 
-    open func dismissViewController(_ completion: (() -> Void)?) {
+    open func dismiss(completion: (() -> Void)?) {
         let animation = self.animation ?? .slideUp
         self.hide(animation) {
             self.didClosePopupView()
@@ -131,11 +135,15 @@ open class PopupCollectionViewController: UIViewController {
         }
     }
 
-    open func appendChildViewControllers(_ childControllers: [UIViewController]) {
-        for vc in childControllers {
-            self.addChildViewController(vc)
+    open func append(childControllers: [UIViewController]) {
+        childControllers.forEach {
+            self.addChildViewController($0)
         }
         self.popupCollectionView.reloadData()
+    }
+
+    func didTapGesture(_ sender: UITapGestureRecognizer) {
+        self.dismiss(completion: nil)
     }
 }
 
@@ -149,8 +157,8 @@ private extension PopupCollectionViewController {
                 self.layout = value
             case .animation(let value):
                 self.animation = value
-            case .overlayColor(let value):
-                self.overlayColor = value
+            case .overlayLayer(let value):
+                self.overlayLayer = value
             case .popupHeight(let value):
                 self.popupHeight = value
             case .cellWidth(let value):
@@ -172,25 +180,22 @@ private extension PopupCollectionViewController {
         self.baseScrollView.alwaysBounceVertical = true
         self.baseScrollView.delegate = self
         self.baseScrollView.frame = self.view.frame
-        self.baseScrollView.backgroundColor = self.overlayColor
+        self.baseScrollView.backgroundColor = .clear
+        self.overlayLayer.frame = self.baseScrollView.bounds
+        self.view.layer.insertSublayer(overlayLayer, at: 0)
         self.view.addSubview(self.baseScrollView)
         self.baseScrollView.addSubview(self.popupCollectionView)
-    }
-
-    @objc func didTapGesture(_ sender: UITapGestureRecognizer) {
-        self.dismissViewController(nil)
-    }
-
-    func registerTapGesture() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGesture(_:)))
-        gestureRecognizer.delegate = self
-        self.baseScrollView.addGestureRecognizer(gestureRecognizer)
     }
 
     func show(_ layout: PopupLayout, animation: PopupAnimation, completion: (() -> Void)?) {
         self.popupCollectionView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: self.popupHeight)
         self.popupCollectionView.frame.origin.x = self.layout.origin(self.popupCollectionView).x
-        self.registerTapGesture()
+
+        // add gesture
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGesture(_:)))
+        gestureRecognizer.delegate = self
+        self.baseScrollView.addGestureRecognizer(gestureRecognizer)
+
         switch animation {
         case .fadeIn:
             self.fadeIn(layout) {
@@ -230,8 +235,8 @@ private extension PopupCollectionViewController {
     }
 
     func didClosePopupView() {
-        for vc in self.childViewControllers {
-            vc.removeFromParentViewController()
+        self.childViewControllers.forEach {
+            $0.removeFromParentViewController()
         }
         self.view.isHidden = true
         self.removeFromParentViewController()
@@ -249,13 +254,13 @@ private extension PopupCollectionViewController {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
         self.popupCollectionView.alpha = 0.0
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
 
         UIView.animate(
-            withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: {
+            withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 1.0
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }, completion: { isFinished in
                 completion()
@@ -264,9 +269,9 @@ private extension PopupCollectionViewController {
 
     func fadeOut(_ completion: @escaping () -> Void) {
         UIView.animate(
-            withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: {
+            withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [], animations: {
                 self.popupCollectionView.alpha = 0.0
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
                 self.popupCollectionView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }, completion: { isFinished in
                 completion()
@@ -276,12 +281,12 @@ private extension PopupCollectionViewController {
     func slideUp(_ layout: PopupLayout, completion: @escaping () -> Void) {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.baseScrollView.contentOffset.y = -UIScreen.main.bounds.height
 
         UIView.animate(
             withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.baseScrollView.contentOffset.y = -layout.origin(self.popupCollectionView).y
                 self.defaultContentOffset = self.baseScrollView.contentOffset
             }, completion: { isFinished in
@@ -293,7 +298,7 @@ private extension PopupCollectionViewController {
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
                 self.popupCollectionView.frame.origin.y = UIScreen.main.bounds.height
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
             }, completion: { isFinished in
                 completion()
         })
@@ -302,11 +307,11 @@ private extension PopupCollectionViewController {
     func slideLeft(_ layout: PopupLayout, completion: @escaping () -> Void) {
         self.baseScrollView.contentInset.top = layout.origin(self.popupCollectionView).y
         self.view.isHidden = false
-        self.baseScrollView.alpha = 0.0
+        self.view.alpha = 0.0
         self.baseScrollView.contentOffset.x = -UIScreen.main.bounds.width
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-                self.baseScrollView.alpha = 1.0
+                self.view.alpha = 1.0
                 self.baseScrollView.contentOffset.x = -layout.origin(self.popupCollectionView).x
                 self.defaultContentOffset = self.baseScrollView.contentOffset
             }, completion: { isFinished in
@@ -318,7 +323,7 @@ private extension PopupCollectionViewController {
         UIView.animate(
             withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
                 self.popupCollectionView.frame.origin.x = UIScreen.main.bounds.width
-                self.baseScrollView.alpha = 0.0
+                self.view.alpha = 0.0
             }, completion: { isFinished in
                 completion()
         })
@@ -332,7 +337,7 @@ extension PopupCollectionViewController: UIScrollViewDelegate {
         if delta > 50 {
             self.baseScrollView.contentInset.top = -scrollView.contentOffset.y
             self.animation = .slideUp
-            self.dismissViewController(nil)
+            self.dismiss(completion: nil)
         }
     }
 }
@@ -348,14 +353,14 @@ extension PopupCollectionViewController: UICollectionViewDataSource {
         cell.layer.cornerRadius = 2
         cell.layer.masksToBounds = true
 
-        let vc = self.childViewControllers[(indexPath as NSIndexPath).item]
+        let vc = self.childViewControllers[indexPath.row]
         vc.view.frame = cell.bounds
         cell.addSubview(vc.view)
         return cell
     }
 
-    @objc(collectionView:didEndDisplayingCell:forItemAtIndexPath:) public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let vc = self.childViewControllers[(indexPath as NSIndexPath).item]
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let vc = self.childViewControllers[indexPath.item]
         vc.view.removeFromSuperview()
     }
 }

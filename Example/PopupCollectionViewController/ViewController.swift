@@ -17,22 +17,27 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let vc1 = DemoViewController()
         vc1.view.backgroundColor = UIColor.red
-        vc1.closeButton.setTitle("First", for: UIControlState())
+        vc1.closeButton.setTitle("First", for: .normal)
         let vc2 = DemoViewController()
         vc2.view.backgroundColor = UIColor.blue
-        vc2.closeButton.setTitle("Second", for: UIControlState())
+        vc2.closeButton.setTitle("Second", for: .normal)
         let vc3 = DemoViewController()
         vc3.view.backgroundColor = UIColor.green
-        vc3.closeButton.setTitle("Third", for: UIControlState())
+        vc3.closeButton.setTitle("Third", for: .normal)
         self.vcs = [vc1, vc2, vc3]
     }
 
     @IBAction func didTapLeftButton(_ sender: AnyObject) {
+        let gradientLayer = self.createGradientLayer(colors: [UIColor.red, UIColor.blue])
         PopupCollectionViewController(fromVC: self.navigationController!)
             .presentViewControllers(
                 self.vcs,
-                options: [.cellWidth(300), .popupHeight(400), .layout(.center)],
-                completion: nil)
+                options: [
+                    .cellWidth(300),
+                    .popupHeight(400),
+                    .overlayLayer(gradientLayer),
+                    .layout(.center)
+                ], completion: nil)
     }
 
     @IBAction func didTapRightButton(_ sender: AnyObject) {
@@ -45,8 +50,17 @@ class ViewController: UIViewController {
                     .contentEdgeInsets(0),
                     .layout(.center),
                     .animation(.slideLeft)
-                ],
-                completion: nil)
+                ], completion: nil)
+    }
+
+    public func createGradientLayer(colors: [UIColor]) -> CAGradientLayer {
+        let gradientLayer = CAGradientLayer()
+
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+
+        gradientLayer.colors = colors.map { $0.cgColor }
+        return gradientLayer
     }
 }
 
@@ -68,7 +82,7 @@ class DemoViewController: UIViewController {
     }
 
     func didTapCloseButton() {
-        self.popupCollectionViewController()?.dismissViewController(nil)
+        self.popupCollectionViewController()?.dismiss(completion: nil)
     }
 }
 
