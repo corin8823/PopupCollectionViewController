@@ -28,8 +28,8 @@ popupVC.presentViewControllers([UIViewController(), UIViewController()],
         .cellWidth(self.view.bounds.width),
         .popupHeight(400),
         .contentEdgeInsets(0),
-        .layout(.Center),
-        .animation(.SlideLeft)
+        .layout(.center),
+        .animation(.slideLeft)
     ],
     completion: nil)
 ```
@@ -54,7 +54,7 @@ pod "PopupCollectionViewController"
 ## Customization
 - `case layout(PopupCollectionViewController.PopupLayout)`
 - `case animation(PopupCollectionViewController.PopupAnimation)`
-- `case overlayColor(UIColor)`
+- `case overlayLayer(CALayer)`
 - `case popupHeight(CGFloat)`
 - `case cellWidth(CGFloat)`
 - `case contentEdgeInsets(CGFloat)`
