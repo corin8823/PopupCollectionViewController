@@ -127,7 +127,7 @@ open class PopupCollectionViewController: UIViewController {
     }
 
     open func dismiss(completion: (() -> Void)?) {
-        let animation = self.animation ?? .slideUp
+        let animation = self.animation
         self.hide(animation) {
             self.didClosePopupView()
             completion?()
