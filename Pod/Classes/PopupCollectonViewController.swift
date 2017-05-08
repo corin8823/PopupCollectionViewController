@@ -110,7 +110,7 @@ open class PopupCollectionViewController: UIViewController {
     public init(fromVC: UIViewController) {
         self.init()
         fromVC.addChildViewController(self)
-        UIApplication.shared.keyWindow?.addSubview(self.view)
+        fromVC.view.addSubview(self.view)
         self.didMove(toParentViewController: fromVC)
     }
 

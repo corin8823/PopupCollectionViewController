@@ -89,6 +89,6 @@ class DemoViewController: UIViewController {
 extension DemoViewController: PopupViewCellDelegate {
 
     func popupCollectionViewControllerDidShow(_ viewController: PopupCollectionViewController) {
-        print("\(self.closeButton.titleLabel?.text)")
+        print("\(String(describing: self.closeButton.titleLabel?.text))")
     }
 }
