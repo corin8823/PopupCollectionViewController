@@ -1,5 +1,5 @@
 PODS:
-  - PopupCollectionViewController (0.2.1)
+  - PopupCollectionViewController (0.2.2)
 
 DEPENDENCIES:
   - PopupCollectionViewController (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PopupCollectionViewController: c8861cc595700cd9a27e320c6a8cdd42821316c9
+  PopupCollectionViewController: 2c542e6a27d90a2867cc97355a2a4e3b9d94f8d5
 
 PODFILE CHECKSUM: 149b607a76921de4dcb0280083a71f596b312fd0
 
