@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "PopupCollectionViewController"
-  s.version          = "0.2.1"
+  s.version          = "0.2.2"
   s.summary          = "PopupCollectionViewController is a collectionView in Popup view"
   s.homepage         = "https://github.com/corin8823/PopupCollectionViewController"
   # s.screenshots      = "https://github.com/corin8823/PopupCollectionViewController/blob/master/ScreenShots/Screenshot.gif"
