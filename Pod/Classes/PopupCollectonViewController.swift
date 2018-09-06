@@ -142,7 +142,7 @@ open class PopupCollectionViewController: UIViewController {
         self.popupCollectionView.reloadData()
     }
 
-    func didTapGesture(_ sender: UITapGestureRecognizer) {
+    @objc func didTapGesture(_ sender: UITapGestureRecognizer) {
         self.dismiss(completion: nil)
     }
 }
@@ -362,6 +362,14 @@ extension PopupCollectionViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let vc = self.childViewControllers[indexPath.item]
         vc.view.removeFromSuperview()
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let vc = self.childViewControllers[indexPath.row]
+        if vc.view.superview != cell {
+            vc.view.frame = cell.bounds
+            cell.addSubview(vc.view)
+        }
     }
 }
 
